@@ -25,6 +25,7 @@
   },
   "scripts": {
     "start": "egg-scripts start --daemon --title=egg-server-vpn-mgt",
+    "run": "egg-scripts start --title=egg-server-vpn-mgt",
     "stop": "egg-scripts stop --title=egg-server-vpn-mgt",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
