@@ -13,4 +13,4 @@ run/
 typings/
 .nyc_output/
 .vscode/
-app/public/
+app/public
