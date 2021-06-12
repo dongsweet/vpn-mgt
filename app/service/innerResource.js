@@ -3,8 +3,26 @@
 const Service = require('egg').Service;
 
 class InnerResourceService extends Service {
-    async listByBranch() {
-        const resList = await this.app.mysql.query('select * from v_resources_branch');
+    async listByBranch(ipUserPrivilege) {
+        let resList = [];
+        if(ipUserPrivilege) {
+            if(ipUserPrivilege.all) {
+                resList = await this.app.mysql.select('v_resources_branch');
+            } else {
+                let where = '';
+                if(ipUserPrivilege.branch) {
+                    where += `branch_id in ( ${ipUserPrivilege.branch.join(',')} )`;
+                }
+                if(ipUserPrivilege.resource_group) {
+                    if(where.length) {
+                        where += ' OR ';
+                    }
+                    where += `id in (SELECT resource_id FROM group_resources WHERE group_id IN (${ipUserPrivilege.resource_group.join(',')}))`;
+                }
+                resList = await this.app.mysql.query(`SELECT * FROM v_resources_branch WHERE ${where}`);
+            }
+        }
+         
         // 查询的数据已经按照 分支ID、类型ID、IP地址进行了排序
         const combined = this.combineByColumns(resList, 'resources', 'branch_id', 'branch');
 

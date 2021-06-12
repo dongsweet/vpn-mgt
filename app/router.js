@@ -4,7 +4,7 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const { router, controller } = app;
-  router.get('/innerResource/listByBranch', controller.innerResource.listByBranch);
-  router.get('/innerResource/listByType', controller.innerResource.listByType);
+  const { router, controller, middleware } = app;
+  router.get('/api/innerResource/listByBranch', middleware.ipToPrivilege(), controller.innerResource.listByBranch);
+  router.get('/api/vpnUser/getUserByIp', controller.vpnUser.getUserByIp);
 };

@@ -5,7 +5,7 @@ const Controller = require('egg').Controller;
 class InnerResourceController extends Controller {
   async listByBranch() {
     const { ctx, service } = this;
-    const resList = await service.innerResource.listByBranch();
+    const resList = await service.innerResource.listByBranch(ctx.ipUserPrivilege);
     ctx.body = resList;
   }
 
