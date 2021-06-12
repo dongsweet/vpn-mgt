@@ -8,7 +8,8 @@ class VpnUserPrivilegeService extends Service {
         if (!user) {
             user = {
                 id: 0,
-                realname: "UnknownUser"
+                realname: "UnknownUser",
+                ip: ip
             };
         }
         return user;
