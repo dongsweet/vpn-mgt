@@ -19,6 +19,12 @@ class InnerResourceService extends Service {
                     }
                     where += `id in (SELECT resource_id FROM group_resources WHERE group_id IN (${ipUserPrivilege.resource_group.join(',')}))`;
                 }
+                if(ipUserPrivilege.resource_type) {
+                    if(where.length) {
+                        where += ' OR ';
+                    }
+                    where += `type_id in (${ipUserPrivilege.resource_type.join(',')})`;
+                }
                 resList = await this.app.mysql.query(`SELECT * FROM v_resources_branch WHERE ${where}`);
             }
         }
@@ -59,6 +65,8 @@ class InnerResourceService extends Service {
         });
         return ordered;
     }
+
+
 }
 
 module.exports = InnerResourceService;
