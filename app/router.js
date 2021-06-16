@@ -5,6 +5,6 @@
  */
 module.exports = app => {
   const { router, controller, middleware } = app;
-  router.get('/api/innerResource/listByBranch', middleware.ipToPrivilege(), controller.innerResource.listByBranch);
+  router.get('/api/innerResource/getUserResources', controller.innerResource.getUserResources);
   router.get('/api/vpnUser/getUserByIp', controller.vpnUser.getUserByIp);
 };

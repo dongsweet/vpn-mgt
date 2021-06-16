@@ -3,15 +3,9 @@
 const Controller = require('egg').Controller;
 
 class InnerResourceController extends Controller {
-  async listByBranch() {
+  async getUserResources() {
     const { ctx, service } = this;
-    const resList = await service.innerResource.listByBranch(ctx.ipUserPrivilege);
-    ctx.body = resList;
-  }
-
-  async listByType() {
-    const { ctx, service } = this;
-    const resList = await service.innerResource.listByType();
+    const resList = await service.innerResource.getUserResources(ctx.ip);
     ctx.body = resList;
   }
 }
