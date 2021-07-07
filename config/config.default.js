@@ -30,7 +30,11 @@ module.exports = appInfo => {
       // 是否加载到 agent 上，默认关闭
       agent: false,
     },
-    proxy: true
+    proxy: true,
+    validate: {
+      convert: true,
+      // validateRoot: false,
+    }
   };
 
   // use for cookie sign key, should change to your own and keep security
@@ -42,6 +46,9 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    adminUser: {
+      bcryptSaltRound: 10
+    }
   };
 
   return {

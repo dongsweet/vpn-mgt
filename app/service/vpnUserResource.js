@@ -4,7 +4,7 @@ const Service = require('egg').Service;
 
 const SELECT = 'username, realname, ip, group_path, branch_id, branch, type_id, type, tag, service_ip, service_domain, service_url, real_ip, description, classify_type, classify_display, res_display';
 
-class InnerResourceService extends Service {
+class VpnUserResourceService extends Service {
     async getUserResources(ip) {
         let resList = await this.app.mysql.query(`SELECT ${SELECT} FROM v_user_resources WHERE ip='${ip}'`);
         if (!resList.length) {
@@ -62,4 +62,4 @@ class InnerResourceService extends Service {
 
 }
 
-module.exports = InnerResourceService;
+module.exports = VpnUserResourceService;
