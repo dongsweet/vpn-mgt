@@ -3,19 +3,11 @@
 const Service = require('egg').Service;
 
 
-class AdminResourceService extends Service {
+class AdminVpnUserService extends Service {
     async list() {
-        let resources = await this.app.mysql.select('v_resources_branch');
-        // , {
-        //     offset: Number(start),
-        //     limit: Number(length)
-        // });
-        // let resCount = await this.app.mysql.query('SELECT count(*) FROM v_resources_branch');
-        // let total = resCount[0]['count(*)'];
+        let vpnUsers = await this.app.mysql.select('vpn_users');
         return {
-            // recordsTotal: total,
-            // recordsFiltered: total,
-            data: resources
+            data: vpnUsers
         };
     }
 
@@ -56,4 +48,4 @@ class AdminResourceService extends Service {
 
 }
 
-module.exports = AdminResourceService;
+module.exports = AdminVpnUserService;

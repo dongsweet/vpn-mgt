@@ -2,7 +2,7 @@
 
 const Controller = require('egg').Controller;
 
-class AdminResourceController extends Controller {
+class AdminVpnUserController extends Controller {
     validate = {
         branch_id: {
             type: 'int'
@@ -41,8 +41,8 @@ class AdminResourceController extends Controller {
 
     async index() {
         const { ctx, service } = this;
-        let resList = await service.adminResource.list();
-        ctx.body = resList;
+        let vpnUserList = await service.adminVpnUser.list();
+        ctx.body = vpnUserList;
     }
 
     async create() {
@@ -107,4 +107,4 @@ class AdminResourceController extends Controller {
 
 }
 
-module.exports = AdminResourceController;
+module.exports = AdminVpnUserController;

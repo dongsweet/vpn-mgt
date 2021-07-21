@@ -14,6 +14,7 @@ module.exports = app => {
   router.get('/api/captcha', controller.captcha.getCaptcha);
   router.resources('resources', '/api/admin/resources', middleware.adminLogin(), controller.adminResource);
   router.resources('branches', '/api/admin/branches', middleware.adminLogin(), controller.adminBranch);
-  router.resources('resource_types', '/api/admin/resource_types', middleware.adminLogin(), controller.adminResourceType);
+  router.resources('resourceTypes', '/api/admin/resourceTypes', middleware.adminLogin(), controller.adminResourceType);
   router.resources('menu', '/api/admin/menu', middleware.adminLogin(), controller.adminMenu);
+  router.resources('vpnUsers', '/api/admin/vpnUsers', middleware.adminLogin(), controller.adminVpnUser);
 };

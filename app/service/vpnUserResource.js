@@ -2,7 +2,7 @@
 
 const Service = require('egg').Service;
 
-const SELECT = 'username, realname, ip, group_path, branch_id, branch, type_id, type, tag, service_ip, service_domain, service_url, real_ip, description, classify_type, classify_display, res_display';
+const SELECT = 'username, realname, ip, group_path, branch_id, branch, type_id, type, type_icon, type_color, tag, service_ip, service_domain, service_url, real_ip, description, classify_type, classify_display, res_display';
 
 class VpnUserResourceService extends Service {
     async getUserResources(ip) {
