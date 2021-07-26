@@ -5,10 +5,10 @@ const Controller = require('egg').Controller;
 class AdminResourceController extends Controller {
     validate = {
         branch_id: {
-            type: 'int'
+            type: 'string'
         },
         type_id: {
-            type: 'int'
+            type: 'string'
         },
         tag: {
             type: 'string?'
@@ -50,7 +50,7 @@ class AdminResourceController extends Controller {
 
         let createObj = ctx.request.body;
         for(let key of Object.keys(createObj)) {
-            if(!createObj[key]) {
+            if('' === createObj[key]) {
                 createObj[key] = null;
             }
         }
@@ -72,11 +72,11 @@ class AdminResourceController extends Controller {
 
         let updateObj = ctx.request.body;
         for(let key of Object.keys(updateObj)) {
-            if(!updateObj[key]) {
+            if('' === updateObj[key]) {
                 updateObj[key] = null;
             }
         }
-        if(ctx.params.id != updateObj.id) {
+        if(ctx.params.id != updateObj.resource_id) {
             ctx.status = 422;
             return;
         }
