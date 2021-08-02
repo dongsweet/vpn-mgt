@@ -5,11 +5,21 @@ const Service = require('egg').Service;
 
 class AdminVpnUserService extends Service {
     async list() {
-        let vpnUsers = await this.app.mysql.select('vpn_users');
+        let vpnUsers = await this.app.mysql.select('v_vpn_users');
         return {
             data: vpnUsers
         };
     }
+
+    async exist(username) {
+        let vpnUser = await this.app.mysql.get('vpn_users', {username: username});
+        if(!vpnUser) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     /**
      * 向Resource插入一条数据
@@ -17,9 +27,10 @@ class AdminVpnUserService extends Service {
      * @returns Resource ID
      */
     async create(data) {
-        let result = await this.app.mysql.insert('resources', data);
 
-        if(1 !== result.affectedRows) {
+        let result = await this.app.mysql.insert('vpn_users', data);
+
+        if (1 !== result.affectedRows) {
             throw new Error(result.message);
         } else {
             return result.insertId;
@@ -30,20 +41,32 @@ class AdminVpnUserService extends Service {
      * 修改一条数据
      * @param {*} data 
      */
-     async update(data) {
-        let result = await this.app.mysql.update('resources', data);
+    async update(data) {
+        const options = {
+            where: {
+                username: data.username
+            }
+        };
+        let result = await this.app.mysql.update('vpn_users', data, options);
 
-        if(1 !== result.affectedRows) {
+        if (1 !== result.affectedRows) {
             throw new Error(result.message);
         }
     }
 
-    async delete(id) {
-        let result = await this.app.mysql.delete('resources', {id: id});
+    async delete(username) {
+        let result = await this.app.mysql.delete('vpn_users', { username: username });
 
-        if(1 !== result.affectedRows) {
+        if (1 !== result.affectedRows) {
             throw new Error(result.message);
         }
+    }
+
+    async getGroupPathList() {
+        let groupPathList = await this.app.mysql.query('SELECT DISTINCT(group_path) FROM vpn_users ORDER BY group_path');
+        return {
+            data: groupPathList
+        };
     }
 
 }

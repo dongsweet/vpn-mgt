@@ -4,26 +4,23 @@ const Controller = require('egg').Controller;
 
 class AdminVpnUserController extends Controller {
     validate = {
-        branch_id: {
-            type: 'int'
+        group_path: {
+            type: 'string'
         },
-        type_id: {
-            type: 'int'
+        type: {
+            type: 'string'
         },
-        tag: {
-            type: 'string?'
+        username: {
+            type: 'string'
         },
-        service_ip: {
+        realname: {
+            type: 'string'
+        },
+        ip: {
             type: 'IP4'
         },
-        service_domain: {
-            type: 'string?'
-        },
-        service_url: {
-            type: 'url?'
-        },
-        real_ip: {
-            type: 'IP4?'
+        mobile: {
+            type: 'string'
         },
         enabled: {
             type: 'int',
@@ -45,12 +42,24 @@ class AdminVpnUserController extends Controller {
         ctx.body = vpnUserList;
     }
 
+    async getAvailableIPs() {
+        const { ctx, service } = this;
+        let ipList = await service.adminVpnUserIP.getAvailableIPs();
+        ctx.body = ipList;
+    }
+
+    async getGroupPathList() {
+        const { ctx, service } = this;
+        let groupPathList = await service.adminVpnUser.getGroupPathList();
+        ctx.body = groupPathList;
+    }
+
     async create() {
         const { ctx, service } = this;
 
         let createObj = ctx.request.body;
         for(let key of Object.keys(createObj)) {
-            if(!createObj[key]) {
+            if('' === createObj[key]) {
                 createObj[key] = null;
             }
         }
@@ -58,7 +67,7 @@ class AdminVpnUserController extends Controller {
         ctx.validate(this.validate);
 
         try {
-            let id = await service.adminResource.create(createObj);
+            let id = await service.adminVpnUser.create(createObj);
         } catch(err) {
             console.log(err);
             ctx.body = this.getResult(false, '添加数据失败');
@@ -72,18 +81,18 @@ class AdminVpnUserController extends Controller {
 
         let updateObj = ctx.request.body;
         for(let key of Object.keys(updateObj)) {
-            if(!updateObj[key]) {
+            if('' === updateObj[key]) {
                 updateObj[key] = null;
             }
         }
-        if(ctx.params.id != updateObj.id) {
+        if(ctx.params.id != updateObj.username) {
             ctx.status = 422;
             return;
         }
         ctx.validate(this.validate);
 
         try {
-            await service.adminResource.update(updateObj);
+            await service.adminVpnUser.update(updateObj);
         } catch(err) {
             console.log(err);
             ctx.body = this.getResult(false, '修改数据失败');
@@ -95,7 +104,7 @@ class AdminVpnUserController extends Controller {
     async destroy() {
         const { ctx, service } = this;
         try {
-            await service.adminResource.delete(ctx.params.id);
+            await service.adminVpnUser.delete(ctx.params.id);
         } catch(err) {
             console.log(err);
             ctx.body = this.getResult(false, '删除数据失败');
