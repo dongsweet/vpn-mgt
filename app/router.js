@@ -19,5 +19,11 @@ module.exports = app => {
   router.resources('vpnUsers', '/api/admin/vpnUsers', middleware.adminLogin(), controller.adminVpnUser);
   router.get('/api/admin/vpnUsers/groupPathList', middleware.adminLogin(), controller.adminVpnUser.getGroupPathList);
   router.get('/api/admin/vpnUsers/availableIPList', middleware.adminLogin(), controller.adminVpnUser.getAvailableIPs);
+  router.get('/api/admin/vpnUsers/getUserFromDevice', middleware.adminLogin(), controller.adminVpnUser.getUserFromDevice);
   router.resources('vpnUserTypes', '/api/admin/vpnUserTypes', middleware.adminLogin(), controller.adminVpnUserType);
+
+  router.get('/api/public/captcha', controller.captcha.getCaptcha);
+  router.get('/api/public/vpnUsers/sendResetPwdVerifyCode', controller.adminVpnUser.sendResetPwdVerifyCode);
+  router.get('/api/public/vpnUsers/resetPassword', controller.adminVpnUser.resetPassword);
+
 };

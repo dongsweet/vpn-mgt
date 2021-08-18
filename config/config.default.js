@@ -34,6 +34,9 @@ module.exports = appInfo => {
     validate: {
       convert: true,
       // validateRoot: false,
+    },
+    logger: {
+      consoleLevel: 'DEBUG',
     }
   };
 
@@ -48,6 +51,20 @@ module.exports = appInfo => {
     // myAppName: 'egg',
     adminUser: {
       bcryptSaltRound: 10
+    },
+    vpnDevice: {
+      api: (controller, action) => `https://vpn.dev.sgwan.cn:4430/cgi-bin/php-cgi/html/delegatemodule/WebApi.php?controler=${controller}&action=${action}`,
+      secret: 'f8946cfa3b52b0bf3d4bca55cc0f7697'
+    },
+    aliyunSms: {
+      api: 'http://smsbanling.market.alicloudapi.com/smsapis',
+      secret: '31ea3d0f6b7d483d98756a5ba937720a',
+      sign: '曙光云SGWAN'
+    },
+    adminVpnUser: {
+      verifyMsg: (code, period) => `您正在重置VPN密码，验证码${code}，切勿泄露于他人，有效期${period}分钟`,
+      verifyPeriod: 10,
+      verifyLength: 4
     }
   };
 
