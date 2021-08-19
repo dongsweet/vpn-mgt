@@ -37,6 +37,7 @@ module.exports = appInfo => {
     },
     logger: {
       consoleLevel: 'DEBUG',
+      dir: '/var/log/vpnmgt'
     }
   };
 
