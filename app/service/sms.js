@@ -22,6 +22,7 @@ class SmsService extends Service {
         if (result.status == 200 && result.data.result == 0) {
             return;
         } else {
+            this.ctx.logger.error('Sms send failed', result);
             throw new Error(`${result.status}: 短信发送失败`);
         }
     }
