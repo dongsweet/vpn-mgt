@@ -65,7 +65,8 @@ module.exports = appInfo => {
     adminVpnUser: {
       verifyMsg: (code, period) => `您正在重置VPN密码，验证码${code}，切勿泄露于他人，有效期${period}分钟`,
       verifyPeriod: 10,
-      verifyLength: 4
+      verifyLength: 4,
+      certPwdLength: 16
     }
   };
 

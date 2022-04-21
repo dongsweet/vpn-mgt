@@ -33,14 +33,24 @@ class AdminVpnUserService extends Service {
      * @returns Resource ID
      */
     async create(data) {
+        let result = await this.app.mysql.beginTransactionScope(
+            async (conn) => {
+                let userResult = await conn.insert('vpn_users', data);
+                let certPwd = password.randomPassword({
+                    length: this.app.config.adminVpnUser.certPwdLength,
+                    characters: password.lower + password.upper + password.digits
+                });
+                let certPwdResult = await conn.insert('vpn_user_certs', {
+                    vpn_username: data.username,
+                    cert_pwd: certPwd
+                });
+                if ((1 != userResult.affectedRows) || (1 != certPwdResult.affectedRows)) {
+                    throw new Error(userResult.message + " | " + certPwdResult.message);
+                }
+                return { userId: userResult.insertId };
+            }, this.ctx);
 
-        let result = await this.app.mysql.insert('vpn_users', data);
-
-        if (1 !== result.affectedRows) {
-            throw new Error(result.message);
-        } else {
-            return result.insertId;
-        }
+        return result.userId;
     }
 
     /**
@@ -61,6 +71,7 @@ class AdminVpnUserService extends Service {
     }
 
     async delete(username) {
+        //TODO 删除其他几个表的内容
         let result = await this.app.mysql.delete('vpn_users', { username: username });
 
         if (1 !== result.affectedRows) {
@@ -88,12 +99,24 @@ class AdminVpnUserService extends Service {
             throw new Error('用户手机号码未配置');
         }
 
-        let code = password.randomPassword({length: this.app.config.adminVpnUser.verifyLength, characters: password.digits});
+        let code = password.randomPassword({ length: this.app.config.adminVpnUser.verifyLength, characters: password.digits });
 
         await this.service.sms.send(user.mobile, this.app.config.adminVpnUser.verifyMsg(code, this.app.config.adminVpnUser.verifyPeriod));
 
         this.ctx.logger.info(`Verify code to reset password of ${username} sent ${code}`);
         return code;
+    }
+
+    async sendNotification(notification) {
+        // let data = await this.list();
+        // let vpnUsers = data.data;
+        // for(let vpnUser of vpnUsers) {
+        //     if(vpnUser.mobile) {
+        //         console.log(`${vpnUser.realname}: ${vpnUser.mobile}: ${notification}`);
+        //         await this.service.sms.send(vpnUser.mobile, notification);
+        //     }
+        // }
+
     }
 
     async resetPassword(username) {
@@ -105,10 +128,10 @@ class AdminVpnUserService extends Service {
             throw new Error('用户信息未配置');
         }
 
-        let pwd = password.randomPassword({characters: password.lower});
+        let pwd = password.randomPassword({ characters: password.lower });
 
         // 若有异常继续抛出即可
-        await this.service.sangforApi.initUserPwd(username, user.group_path, pwd);   
+        await this.service.sangforApi.initUserPwd(username, user.group_path, pwd);
 
         this.ctx.logger.info(`Reset password of ${username} into ${pwd}`);
         return pwd;

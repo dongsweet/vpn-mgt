@@ -25,5 +25,5 @@ module.exports = app => {
   router.get('/api/public/captcha', controller.captcha.getCaptcha);
   router.get('/api/public/vpnUsers/sendResetPwdVerifyCode', controller.adminVpnUser.sendResetPwdVerifyCode);
   router.get('/api/public/vpnUsers/resetPassword', controller.adminVpnUser.resetPassword);
-
+  router.get('/api/admin/vpnUsers/sendNotification', middleware.adminLogin(), controller.adminVpnUser.sendNotification);
 };

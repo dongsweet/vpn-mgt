@@ -70,7 +70,7 @@ class AdminVpnUserController extends Controller {
         try {
             let id = await service.adminVpnUser.create(createObj);
         } catch (err) {
-            console.log(err);
+            ctx.logger.error(err);
             ctx.body = this.getResult(false, '添加数据失败');
             return;
         }
@@ -182,6 +182,14 @@ class AdminVpnUserController extends Controller {
             return;
         }
         ctx.body = this.getResult(true, password);
+    }
+
+    async sendNotification() {
+        const { ctx, service, app } = this;
+        if(ctx.query.notification) {
+            service.adminVpnUser.sendNotification(ctx.query.notification);
+        }
+        ctx.body = this.getResult(true);
     }
 
 }
