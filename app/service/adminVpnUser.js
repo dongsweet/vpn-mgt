@@ -101,21 +101,21 @@ class AdminVpnUserService extends Service {
 
         let code = password.randomPassword({ length: this.app.config.adminVpnUser.verifyLength, characters: password.digits });
 
-        await this.service.sms.send(user.mobile, this.app.config.adminVpnUser.verifyMsg(code, this.app.config.adminVpnUser.verifyPeriod));
+        await this.service.sms.send(user.mobile, this.app.config.adminVpnUser.resetPwdTemplateId, code, this.app.config.adminVpnUser.verifyPeriod);
 
         this.ctx.logger.info(`Verify code to reset password of ${username} sent ${code}`);
         return code;
     }
 
     async sendNotification(notification) {
-        // let data = await this.list();
-        // let vpnUsers = data.data;
-        // for(let vpnUser of vpnUsers) {
-        //     if(vpnUser.mobile) {
-        //         console.log(`${vpnUser.realname}: ${vpnUser.mobile}: ${notification}`);
-        //         await this.service.sms.send(vpnUser.mobile, notification);
-        //     }
-        // }
+        let data = await this.list();
+        let vpnUsers = data.data;
+        for(let vpnUser of vpnUsers) {
+            if(vpnUser.mobile) {
+                console.log(`${vpnUser.realname}: ${vpnUser.mobile}: ${notification}`);
+                await this.service.sms.send(vpnUser.mobile, notification);
+            }
+        }
 
     }
 

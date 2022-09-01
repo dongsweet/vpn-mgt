@@ -58,12 +58,13 @@ module.exports = appInfo => {
       secret: 'f8946cfa3b52b0bf3d4bca55cc0f7697'
     },
     aliyunSms: {
-      api: 'http://smsbanling.market.alicloudapi.com/smsapis',
+      api: 'http://gyytz.market.alicloudapi.com/sms/smsSend',
       secret: '31ea3d0f6b7d483d98756a5ba937720a',
-      sign: '曙光云SGWAN'
+      param: (code, period) => `**code**:${code},**period**:${period}`,
+      smsSignId: 'dbe64eb243e84b0eaa0f2e526fd6e49c'
     },
     adminVpnUser: {
-      verifyMsg: (code, period) => `您正在重置VPN密码，验证码${code}，切勿泄露于他人，有效期${period}分钟`,
+      resetPwdTemplateId: 'fd0a3505a99349f38bbebc02f39867f4',
       verifyPeriod: 10,
       verifyLength: 4,
       certPwdLength: 16
